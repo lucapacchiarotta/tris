@@ -27,6 +27,14 @@ return [
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
         ],
     ],
+    /*
+    'service_manager' => [
+        // Permette di registrare il log a livello di configurazione del modulo
+        'abstract_factories' => [
+            'Zend\Log\LoggerAbstractServiceFactory',
+        ]
+    ],
+    */
     'view_manager' => [
         
         'display_not_found_reason' => true,

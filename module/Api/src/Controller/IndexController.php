@@ -129,7 +129,7 @@ class IndexController extends AbstractApiController {
             }
             
             $fields = json_decode($item->getFields());
-            list($x, $y) = explode(':', $coord);
+            list($x, $y) = explode('|', $coord);
             
             $size = $item->getSize();
             
@@ -161,6 +161,7 @@ class IndexController extends AbstractApiController {
             
             $this->_objResult['won'] = $won;
             $this->_objResult['gameFinished'] = $gameFinished;
+            $this->_objResult['checks'] = $result['checks'];
             
             $item->setFields(json_encode($fields));
             
@@ -221,11 +222,15 @@ class IndexController extends AbstractApiController {
             $resDiagonal[$i] = true;
         }
         
+        $checks = [];
+        
         for ($i = 0; $i < $size; $i++) {
             
             for ($j = $i; $j < $size; $j++) {
                 
                 $currElem = trim($grid[$i][$j]);
+                
+                $checks[] = "Elemento corrente ($i, $j) : $currElem";
                 
                 if (empty($currElem)) {
                     $gameFinished = false;
@@ -234,15 +239,21 @@ class IndexController extends AbstractApiController {
                 $resHorizontal[$i] = $resHorizontal[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i + 1][$j]);
                 $resVertical[$i] = $resVertical[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i][$j + 1]);
                 
+                $checks[] = "Orizz: {$grid[$i][$j]} == {$grid[$i + 1][$j]}";
+                $checks[] = "Vert: {$grid[$i][$j]} == {$grid[$i][$j + 1]}";
+                
                 if ($i < $size - 1 && $i == $j) {
                     $resDiagonal[$i] = $resHorizontal[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i + 1][$j + 1]);
+                    $checks[] = "Diag: {$grid[$i][$j]} == {$grid[$i + 1][$j + 1]}";
                 }
             }
             
         }
+        /*
         var_dump($resHorizontal);
         var_dump($resVertical);
         var_dump($resDiagonal);
+        */
         
         for ($i = 0; $i < $size; $i++) {
             if ($resHorizontal[$i] === true || $resVertical[$i] === true /*|| $resDiagonal[$i] === true*/) {
@@ -253,7 +264,8 @@ class IndexController extends AbstractApiController {
         
        return [
            'won' => $won, 
-           'gameFinished' => $gameFinished
+           'gameFinished' => $gameFinished,
+           'checks' => $checks
        ];
     }
     

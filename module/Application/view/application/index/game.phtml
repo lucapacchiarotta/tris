@@ -1,0 +1,73 @@
+<script>
+    let idGame = '<?= $idGame ?>';
+    let size = <?= $size ?>;
+    let players = <?= $players ?>;
+    let current_player = <?= $current_player ?>;
+    let fields = <?= $fields ?>;
+    let winner = '<?= $winner ?>';
+    
+	$(function() {
+		$('#current-player').html(players[current_player]);
+
+		$(fields).each(function(i, item) {
+			$(item).each(function(j, item2) {
+    			if (item2 != ' ') {
+        			$('#item' + i + j).html(item2);
+    			}
+			})
+		})
+	});
+
+	function doselection(x, y) {
+		let coord = '' + x + '|' + y;
+		data = {
+          idGame,
+          player: current_player,
+          coord
+        };
+		$.ajax({
+          url: "/api/v1/doselection",
+          method: "POST",
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(data) 
+        })
+        .done(function(data) {
+          if (data.status == 'OK') {
+    		$('#item' + x + y).html(players[current_player]);
+    		$('#info').html("Finished: " + data.gameFinished);
+          }
+        });
+        
+	}
+
+</script>
+<div class="row text-center">
+	<h1>Play tic-tac-toe game!</h1>
+</div>
+<div class="row">
+    <div class="col-9">
+    	<div id="griglia-gioco" style="width: <?= ($size * 90) + 2; ?>px">
+    		<?php
+    		for ($i = 0; $i < $size; $i++) {
+        		echo '<div class="griglia-row d-flex">';
+    		    
+    		    for ($j = 0; $j < $size; $j++) {
+        		    echo "<div class=\"griglia_item\" id=\"item$i$j\" onclick=\"doselection($i, $j);\"></div>";    		        
+    		    }
+         		echo '</div>';
+    		}
+    		?>
+    	</div>
+    </div>
+    
+    <div class="col-3">
+    	<div class="text-center"><b>Current player</b>:</div>
+    	<div id="current-player" class="text-center"></div>
+    	<div id="info" class=""></div>
+    </div>
+</div>
+<div class="row" style="margin: 30px 0;">
+	<a href="/">Create new game!</a>
+</div>
+

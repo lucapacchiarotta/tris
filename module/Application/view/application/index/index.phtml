@@ -1,0 +1,72 @@
+<script>
+	$(function() {
+	});
+
+	function docreategame() {
+		let size = $('#size').val();
+		let players = $('#players').val();
+		//let symbols = $('#symbols').val();
+		let symbols = ["X", "O"];
+		
+		data = {
+			size,
+			players,
+			symbols
+        };
+        
+		$.ajax({
+          url: "/api/v1/creategame",
+          method: "POST",
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(data) 
+        })
+        .done(function(data) {
+          if (data.status == 'OK') {
+    		
+    		$('#message').html("Game created! [" + data.game_id + "] Link: <a href=\"/game/" + data.game_id + "\">LINK</a>");
+          }
+        });
+        
+	}
+
+</script>
+
+<div class="row">
+    <div class="col-sm mx-0 px-0">
+    	<h4>New game</h4>
+    	
+    	<form>
+    		<div>Grid size</div>
+    		<div>
+    			<select name="size" id="size">
+        			<option value="3">3X3</option>
+        			<option value="5">5X5</option>
+        			<option value="10">10X10</option>
+    			</select>
+    		</div>
+    		
+    		<div>Number of players</div>
+    		<div>
+    			<select name="players" id="players">
+        			<option value="2">2</option>
+        			<option value="3">3</option>
+        			<option value="4">4</option>
+    			</select>
+    		</div>
+    		
+    		<div>Symbols of players</div>
+    		<div>
+    			<input type="text" name="symbols" id="symbols" />
+    		</div>
+    		
+    		<input type="button" value="Create!" onclick="docreategame();" />
+    	</form>
+    </div>
+</div>
+
+<div class="row">
+	<div id="message"></div>
+</div>
+
+

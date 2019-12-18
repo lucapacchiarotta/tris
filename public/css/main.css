@@ -1,0 +1,25 @@
+@CHARSET "UTF8";
+
+body {
+	background-color: #DDD;
+}
+
+#griglia-gioco {
+	border: 1px #BBB solid;
+}
+
+.griglia-row {
+}
+
+.griglia_item {
+	width: 90px;
+	height: 90px;
+	font-size: 36px;
+	text-align: center;
+	padding: 15px 0;
+	cursor: pointer;
+}
+
+.griglia_item:hover {
+	background-color: #AAA;
+}

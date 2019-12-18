@@ -15,5 +15,6 @@ return [
     'Zend\Validator',
     'DoctrineModule',
     'DoctrineORMModule',
-    'Api',
+    'Application',
+    'Api'
 ];
