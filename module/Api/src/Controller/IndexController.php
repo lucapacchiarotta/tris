@@ -234,18 +234,53 @@ class IndexController extends AbstractApiController {
                 
                 if (empty($currElem)) {
                     $gameFinished = false;
+                    $resHorizontal[$i] = false;
+                    $resVertical[$i] = false;
+                    $resDiagonal[$i] = false;
+                }
+                /*
+                if ($i < $size - 1) {
+                    $resHorizontal[$i] = $resHorizontal[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i + 1][$j]);
+                    $checks[] = "Orizz: {$grid[$i][$j]} == {$grid[$i + 1][$j]}";
                 }
                 
-                $resHorizontal[$i] = $resHorizontal[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i + 1][$j]);
-                $resVertical[$i] = $resVertical[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i][$j + 1]);
+                if ($j < $size - 1) {
+                    $resVertical[$i] = $resVertical[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i][$j + 1]);                    
+                    $checks[] = "Vert: {$grid[$i][$j]} == {$grid[$i][$j + 1]}";                    
+                }
                 
-                $checks[] = "Orizz: {$grid[$i][$j]} == {$grid[$i + 1][$j]}";
-                $checks[] = "Vert: {$grid[$i][$j]} == {$grid[$i][$j + 1]}";
                 
                 if ($i < $size - 1 && $i == $j) {
                     $resDiagonal[$i] = $resHorizontal[$i] && !empty($currElem) && ($grid[$i][$j] == $grid[$i + 1][$j + 1]);
                     $checks[] = "Diag: {$grid[$i][$j]} == {$grid[$i + 1][$j + 1]}";
                 }
+                */
+                if ($resHorizontal[$i] === true) {
+                    if ($i < $size - 1) {
+                        if ($currElem !== $grid[$i + 1][$j]) {
+                            $resHorizontal[$i] = false;
+                        }
+                    }
+                }
+                
+                if ($resVertical[$i] === true) {
+                    if ($j < $size - 1) {
+                        if ($currElem !== $grid[$i][$j + 1]) {
+                            $resVertical[$i] = false;
+                        }
+                    }
+                }
+                
+                if ($resDiagonal[$i] === true) {
+                    if ($i == $j) {
+                        if ($i < $size - 1) {
+                            if ($currElem !== $grid[$i + 1][$j + 1]) {
+                                $resDiagonal[$i] = false;
+                            }
+                        }
+                    }
+                }
+                
             }
             
         }

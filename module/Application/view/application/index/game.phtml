@@ -35,10 +35,17 @@
         .done(function(data) {
           if (data.status == 'OK') {
     		$('#item' + x + y).html(players[current_player]);
-    		$('#info').html("Finished: " + data.gameFinished);
+    		$('#info').html("Finished: " + data.gameFinished + "<br />Won: " + data.won);
+
+    		console.log("Len: " + players.length);
+    		if (current_player == players.length - 1) {
+        		current_player = 0;
+    		} else {
+        		current_player++; 
+    		}
+    		$('#current-player').html(players[current_player]);
           }
         });
-        
 	}
 
 </script>
